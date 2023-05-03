@@ -76,6 +76,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\rlInput\Gamepad.DirectInput.hpp" />
+    <ClInclude Include="include\rlInput\Gamepad.XInput.hpp" />
+    <ClInclude Include="include\rlInput\Keyboard.hpp" />
+    <ClInclude Include="include\rlInput\Mouse.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Gamepad.DirectInput.cpp" />
+    <ClCompile Include="src\Gamepad.XInput.cpp" />
+    <ClCompile Include="src\Keyboard.cpp" />
+    <ClCompile Include="src\Mouse.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
