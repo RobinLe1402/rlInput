@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rlInput", "rlInput.vcxproj", "{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Debug|x64.ActiveCfg = Debug|x64
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Debug|x64.Build.0 = Debug|x64
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Debug|x86.ActiveCfg = Debug|x64
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Release|x64.ActiveCfg = Release|x64
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Release|x64.Build.0 = Release|x64
+		{A29B6987-DA7B-49AC-AD3D-5FB0E7B506EC}.Release|x86.ActiveCfg = Release|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Debug|x64.ActiveCfg = Debug|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Debug|x64.Build.0 = Debug|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Debug|x86.ActiveCfg = Debug|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Release|x64.ActiveCfg = Release|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Release|x64.Build.0 = Release|x64
+		{7B0E7FA3-7EE5-409F-80F8-FF6F40576068}.Release|x86.ActiveCfg = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F6FBA18-35A4-4F7D-9E24-6A4FE99008A5}
+	EndGlobalSection
+EndGlobal
