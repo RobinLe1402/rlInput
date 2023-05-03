@@ -1,4 +1,4 @@
-# The rlIcon static library
+# The rlInput static library
 
 This repo contains the static library `rlInput` that provides a unified interface for input devices
 (mouse, keyboard, gamepads).
