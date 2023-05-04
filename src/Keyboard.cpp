@@ -3,6 +3,19 @@
 namespace rlInput
 {
 
+	Keyboard Keyboard::s_oInstance;
+
+
+
+	Keyboard::ModKeys Keyboard::modifierKeys() const
+	{
+		return ModKeys(
+			(m_upStates[VK_MENU   ].bDown ? ModKey_Alt     : 0) |
+			(m_upStates[VK_CONTROL].bDown ? ModKey_Control : 0) |
+			(m_upStates[VK_SHIFT  ].bDown ? ModKey_Shift   : 0)
+		);
+	}
+
 	Keyboard::Keyboard()
 	{
 		memset(m_upStates.get(), 0, sizeof(Key) * 256);
@@ -17,7 +30,7 @@ namespace rlInput
 		for (unsigned i = 0; i < 256; ++i)
 		{
 			pDest->bPressed  =  *pRawNew && !*pRawOld;
-			pDest->bHeld     =  *pRawNew;
+			pDest->bDown     =  *pRawNew;
 			pDest->bReleased = !*pRawNew &&  *pRawOld;
 
 			++pDest;
@@ -35,6 +48,9 @@ namespace rlInput
 	{
 		switch (uMsg)
 		{
+		case WM_KILLFOCUS:
+			reset();
+			break;
 
 		case WM_KEYDOWN:
 			m_oRawStates_New[wParam] = true;

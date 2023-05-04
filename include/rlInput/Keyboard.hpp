@@ -26,12 +26,25 @@ namespace rlInput
 	{
 	public: // types
 
+		/// <summary>
+		/// The state of a single key.
+		/// </summary>
 		struct Key
 		{
-			bool bPressed;
-			bool bHeld;
-			bool bReleased;
+			bool bPressed;  // Was the key pressed down?
+			bool bDown;     // Is the key currently down?
+			bool bReleased; // Was the key released?
 		};
+
+		/// <summary>
+		/// State of the modifier keys.<para/>
+		/// Consists of the <c>ModKey_[...]</c> flags.
+		/// </summary>
+		using ModKeys = unsigned char;
+
+		static constexpr ModKeys ModKey_Alt     = 0x01;
+		static constexpr ModKeys ModKey_Control = 0x02;
+		static constexpr ModKeys ModKey_Shift   = 0x04;
 
 
 
@@ -52,7 +65,17 @@ namespace rlInput
 
 	public: // methods
 
-		const Key &operator[](unsigned char index) const { return m_upStates[index]; }
+		const Key &operator[](unsigned char index) const noexcept { return key(index); }
+
+		/// <summary>
+		/// Get the state of a key at the time of the last call to <c>prepare()</c>.
+		/// </summary>
+		const Key &key(unsigned char index) const noexcept { return m_upStates[index]; }
+
+		/// <summary>
+		/// Get the state of the modifier keys at the time of the last call to <c>prepare()</c>.
+		/// </summary>
+		ModKeys modifierKeys() const;
 
 		/// <summary>
 		/// Prepare the internal key info for queries.<para />
