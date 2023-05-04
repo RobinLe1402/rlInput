@@ -9,6 +9,7 @@
 // STL
 #include <memory>
 #include <string>
+#include <vector>
 
 // Win32
 #define WIN32_MEAN_AND_LEAN
@@ -71,6 +72,17 @@ namespace rlInput
 		/// Get the state of a key at the time of the last call to <c>prepare()</c>.
 		/// </summary>
 		const Key &key(unsigned char index) const noexcept { return m_upStates[index]; }
+
+		/// <summary>
+		/// Get all keys that have been pressed between the previous and current call to
+		/// <c>prepare()</c>.
+		/// </summary>
+		/// <param name="oDest">
+		/// The virtual key codes of the newly pressed keys.<para/>
+		/// The previous values are cleared before anything is written.<para/>
+		/// After the call, the values are guaranteed to be in ascending order by binary value.
+		/// </param>
+		void pressedKeys(std::vector<unsigned char> &oDest) const;
 
 		/// <summary>
 		/// Get the state of the modifier keys at the time of the last call to <c>prepare()</c>.

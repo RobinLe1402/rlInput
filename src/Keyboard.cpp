@@ -7,6 +7,16 @@ namespace rlInput
 
 
 
+	void Keyboard::pressedKeys(std::vector<unsigned char> &oDest) const
+	{
+		oDest.clear();
+		for (unsigned i = 0; i < 256; ++i)
+		{
+			if (m_upStates[i].bPressed)
+				oDest.push_back(i);
+		}
+	}
+
 	Keyboard::ModKeys Keyboard::modifierKeys() const
 	{
 		return ModKeys(
