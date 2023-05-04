@@ -77,15 +77,52 @@ namespace rlInput
 
 
 
+		/// <summary>
+		/// Get the state of the left mouse button at the time of the last call to <c>prepare()</c>.
+		/// </summary>
 		const Button &leftButton()   const noexcept { return m_oStates[0]; }
+
+		/// <summary>
+		/// Get the state of the right mouse button at the time of the last call to
+		/// <c>prepare()</c>.
+		/// </summary>
 		const Button &rightButton()  const noexcept { return m_oStates[1]; }
+
+		/// <summary>
+		/// Get the state of the middle mouse button at the time of the last call to
+		/// <c>prepare()</c>.
+		/// </summary>
 		const Button &middleButton() const noexcept { return m_oStates[2]; }
 
+
+
+		/// <summary>
+		/// Get the horizontal client position of the cursor at the time of the last call to
+		/// <c>prepare()</c>.<para />
+		/// Only valid if <c>onClient()</c> returns <c>TRUE</c>.
+		/// </summary>
 		auto x() const noexcept { return m_iCachedClientX; }
+		/// <summary>
+		/// Get the vertical client position of the cursor at the time of the last call to
+		/// <c>prepare()</c>.<para />
+		/// Only valid if <c>onClient()</c> returns <c>TRUE</c>.
+		/// </summary>
 		auto y() const noexcept { return m_iCachedClientY; }
 
+
+
+		/// <summary>
+		/// Was the mouse on the client when the last call to <c>prepare()</c> occured?<para/>
+		/// Please note that this function returns <c>TRUE</c> if a mouse button was held down while
+		/// the mouse left the window. In this case, this function only returns <c>FALSE</c> after
+		/// all these mouse buttons were released.
+		/// </summary>
 		bool onClient() const noexcept { return m_bCachedOnClient; }
 
+		/// <summary>
+		/// The mouse wheel delta, in multiples or divisions of <c>WHEEL_DELTA</c>, at the time of
+		/// the last call to <c>prepare()</c>.
+		/// </summary>
 		auto weelRotation() const noexcept { return m_iCachedWheelRotation; }
 
 
