@@ -1,7 +1,10 @@
+#include <rlInput/Gamepad.XInput.hpp>
 #include <rlInput/Keyboard.hpp>
 #include <rlInput/Mouse.hpp>
 
 LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+void testInputs(HWND hWnd);
 
 int WINAPI WinMain(
 	_In_     HINSTANCE hInstance,
@@ -38,84 +41,106 @@ int WINAPI WinMain(
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
 	
 	MSG msg{};
-	while (GetMessageW(&msg, NULL, 0, 0))
+	while (true)
 	{
-		TranslateMessage(&msg);
-		DispatchMessageW(&msg);
+		while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT)
+				goto lbEnd;
+
+			TranslateMessage(&msg);
+			DispatchMessageW(&msg);
+		}
+
+		testInputs(hWnd);
 	}
+lbEnd:
 
 	DestroyCursor(wc.hCursor);
 	return 0;
 }
 
-
-LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+void testInputs(HWND hWnd)
 {
+	auto &xinput   = rlInput::XInput::Instance();
 	auto &keyboard = rlInput::Keyboard::Instance();
 	auto &mouse    = rlInput::Mouse::Instance();
 
 	using rlInput::Keyboard;
 	using rlInput::Mouse;
 
-	if (keyboard.update(hWnd, uMsg, wParam, lParam))
+	xinput.prepare();
+	keyboard.prepare();
+	mouse.prepare();
+
+	if (xinput.gamepad(0).connected())
 	{
-		keyboard.prepare();
+		if (xinput.gamepad(0).button(rlInput::XINPUT_BUTTON_START).bPressed)
+			MessageBoxA(NULL, "[Start] was pressed.", "Info",
+				MB_ICONINFORMATION | MB_APPLMODAL);
 
-		const auto iModKeys = keyboard.modifierKeys();
-		if (iModKeys & Keyboard::ModKey_Control)
+		SetWindowTextA(hWnd, std::to_string(xinput.gamepad(0).leftTrigger().iState).c_str());
+	}
+
+	const auto iModKeys = keyboard.modifierKeys();
+	if (iModKeys & Keyboard::ModKey_Control)
+	{
+		std::wstring sPressedKeys;
+
+		for (unsigned char c = 'A'; c <= 'Z'; ++c)
 		{
-			std::wstring sPressedKeys;
-
-			for (unsigned char c = 'A'; c <= 'Z'; ++c)
+			if (keyboard[c].bPressed)
 			{
-				if (keyboard[c].bPressed)
-				{
-					if (!sPressedKeys.empty())
-						sPressedKeys += L" + ";
-					sPressedKeys += c;
-				}
-			}
-
-			if (!sPressedKeys.empty())
-			{
-				if (iModKeys & Keyboard::ModKey_Alt)
-					sPressedKeys.insert(0, L"Alt + ");
-				if (iModKeys & Keyboard::ModKey_Shift)
-					sPressedKeys.insert(0, L"Shift + ");
-				if (iModKeys & Keyboard::ModKey_Control)
-					sPressedKeys.insert(0, L"Control + ");
-
-				if (!keyboard.recordedText().empty())
-				{
-					sPressedKeys += L"\nInput text: \"";
-					sPressedKeys += keyboard.recordedText();
-					sPressedKeys += L"\"";
-
-					keyboard.clearRecordedText();
-				}
-
-				MessageBoxW(hWnd, sPressedKeys.c_str(), L"Key combination pressed",
-					MB_ICONINFORMATION | MB_APPLMODAL);
+				if (!sPressedKeys.empty())
+					sPressedKeys += L" + ";
+				sPressedKeys += c;
 			}
 		}
 
-		return 0;
-	}
-
-	if (mouse.update(hWnd, uMsg, wParam, lParam))
-	{
-		mouse.prepare();
-
-		if (mouse.leftButton().bClicked)
+		if (!sPressedKeys.empty())
 		{
-			MessageBoxA(hWnd, (std::string("Mouse clicked at (") +
-				std::to_string(mouse.x()) +
-				", " +
-				std::to_string(mouse.y()) +
-				")").c_str(), "Info",
+			if (iModKeys & Keyboard::ModKey_Alt)
+				sPressedKeys.insert(0, L"Alt + ");
+			if (iModKeys & Keyboard::ModKey_Shift)
+				sPressedKeys.insert(0, L"Shift + ");
+			if (iModKeys & Keyboard::ModKey_Control)
+				sPressedKeys.insert(0, L"Control + ");
+
+			if (!keyboard.recordedText().empty())
+			{
+				sPressedKeys += L"\nInput text: \"";
+				sPressedKeys += keyboard.recordedText();
+				sPressedKeys += L"\"";
+
+				keyboard.clearRecordedText();
+			}
+
+			MessageBoxW(NULL, sPressedKeys.c_str(), L"Key combination pressed",
 				MB_ICONINFORMATION | MB_APPLMODAL);
 		}
 	}
+
+	if (mouse.leftButton().bClicked)
+	{
+		MessageBoxA(NULL, (std::string("Mouse clicked at (") +
+			std::to_string(mouse.x()) +
+			", " +
+			std::to_string(mouse.y()) +
+			")").c_str(), "Info",
+			MB_ICONINFORMATION | MB_APPLMODAL);
+	}
+}
+
+
+LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	auto &xinput   = rlInput::XInput::Instance();
+	auto &keyboard = rlInput::Keyboard::Instance();
+	auto &mouse    = rlInput::Mouse::Instance();
+
+	xinput.update(hWnd, uMsg, wParam, lParam);
+	keyboard.update(hWnd, uMsg, wParam, lParam);
+	mouse.update(hWnd, uMsg, wParam, lParam);
 
 
 	switch (uMsg)
