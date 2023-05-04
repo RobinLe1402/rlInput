@@ -110,6 +110,12 @@ namespace rlInput
 			auto &rightTrigger() const noexcept { return m_oTriggerButtons[1]; }
 
 
+			bool setVibration(WORD iLeftVibration, WORD iRightVibration) noexcept;
+
+			auto leftVibration() const noexcept { return m_iLeftVibration; }
+			auto rightVibration() const noexcept { return m_iRightVibration; }
+
+
 		private: // methods
 
 			Gamepad(unsigned iID);
@@ -129,6 +135,8 @@ namespace rlInput
 			ThumbStick    m_oThumbSticks[2];
 			TriggerButton m_oTriggerButtons[2];
 
+			WORD m_iLeftVibration  = 0;
+			WORD m_iRightVibration = 0;
 
 		};
 

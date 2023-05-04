@@ -116,13 +116,36 @@ namespace rlInput
 
 	void XInput::Gamepad::reset() noexcept
 	{
-		m_oRawState_Old ={};
+		m_oRawState_Old = {};
 		m_oRawState_New = {};
 
 		memset(m_oButtons,        0, sizeof(m_oButtons));
 		memset(m_oThumbSticks,    0, sizeof(m_oThumbSticks));
 		memset(m_oTriggerButtons, 0, sizeof(m_oTriggerButtons));
 	}
+
+	bool XInput::Gamepad::setVibration(WORD iLeftVibration, WORD iRightVibration) noexcept
+	{
+		XINPUT_VIBRATION oVib =
+		{
+			.wLeftMotorSpeed  = iLeftVibration,
+			.wRightMotorSpeed = iRightVibration
+		};
+
+		bool bResult = XInputSetState(m_iID, &oVib) == ERROR_SUCCESS;
+
+		if (bResult)
+		{
+			m_iLeftVibration  = iLeftVibration;
+			m_iRightVibration = iRightVibration;
+		}
+
+		return bResult;
+	}
+
+
+
+
 
 	void XInput::prepare() noexcept
 	{

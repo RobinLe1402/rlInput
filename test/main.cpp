@@ -80,6 +80,10 @@ void testInputs(HWND hWnd)
 				MB_ICONINFORMATION | MB_APPLMODAL);
 
 		SetWindowTextA(hWnd, std::to_string(xinput.gamepad(0).leftTrigger().iState).c_str());
+		xinput.gamepad(0).setVibration(
+			WORD(xinput.gamepad(0).leftTrigger().iState  / 255.0 * 65535),
+			WORD(xinput.gamepad(0).rightTrigger().iState / 255.0 * 65535)
+		);
 	}
 
 	const auto iModKeys = keyboard.modifierKeys();
