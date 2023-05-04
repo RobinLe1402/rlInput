@@ -39,7 +39,7 @@ namespace rlInput
 
 	public: // static methods
 
-		static Mouse &Instance() { return s_oInstance; }
+		static Mouse &Instance() noexcept { return s_oInstance; }
 
 
 	private: // static variables

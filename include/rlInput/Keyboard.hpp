@@ -53,7 +53,7 @@ namespace rlInput
 
 	public: // static methods
 
-		static Keyboard &Instance() { return s_oInstance; }
+		static Keyboard &Instance() noexcept { return s_oInstance; }
 
 
 	private: // static variables
