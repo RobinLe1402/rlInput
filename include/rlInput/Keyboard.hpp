@@ -66,34 +66,11 @@ namespace rlInput
 
 	public: // methods
 
-		const Key &operator[](unsigned char index) const noexcept { return key(index); }
-
-		/// <summary>
-		/// Get the state of a key at the time of the last call to <c>prepare()</c>.
-		/// </summary>
-		const Key &key(unsigned char index) const noexcept { return m_upStates[index]; }
-
-		/// <summary>
-		/// Get all keys that have been pressed between the previous and current call to
-		/// <c>prepare()</c>.
-		/// </summary>
-		/// <param name="oDest">
-		/// The virtual key codes of the newly pressed keys.<para/>
-		/// The previous values are cleared before anything is written.<para/>
-		/// After the call, the values are guaranteed to be in ascending order by binary value.
-		/// </param>
-		void pressedKeys(std::vector<unsigned char> &oDest) const;
-
-		/// <summary>
-		/// Get the state of the modifier keys at the time of the last call to <c>prepare()</c>.
-		/// </summary>
-		ModKeys modifierKeys() const;
-
 		/// <summary>
 		/// Prepare the internal key info for queries.<para />
-		/// Must be called every time an updated state of the keys is required.
+		/// Must be called every time an updated state of the keyboard is required.
 		/// </summary>
-		void prepare();
+		void prepare() noexcept;
 
 		/// <summary>
 		/// Try to process a Windows message.<para/>
@@ -115,6 +92,33 @@ namespace rlInput
 		void reset() noexcept;
 
 
+
+
+
+		const Key &operator[](unsigned char index) const noexcept { return key(index); }
+
+		/// <summary>
+		/// Get the state of a key at the time of the last call to <c>prepare()</c>.
+		/// </summary>
+		const Key &key(unsigned char index) const noexcept { return m_upStates[index]; }
+
+		/// <summary>
+		/// Get all keys that have been pressed between the previous and current call to
+		/// <c>prepare()</c>.
+		/// </summary>
+		/// <param name="oDest">
+		/// The virtual key codes of the newly pressed keys.<para/>
+		/// The previous values are cleared before anything is written.<para/>
+		/// After the call, the values are guaranteed to be in ascending order by binary value.
+		/// </param>
+		void pressedKeys(std::vector<unsigned char> &oDest) const noexcept;
+
+		/// <summary>
+		/// Get the state of the modifier keys at the time of the last call to <c>prepare()</c>.
+		/// </summary>
+		ModKeys modifierKeys() const noexcept;
+
+		
 
 		/// <summary>
 		/// Start recording text input.<para/>

@@ -7,7 +7,7 @@ namespace rlInput
 
 
 
-	void Keyboard::pressedKeys(std::vector<unsigned char> &oDest) const
+	void Keyboard::pressedKeys(std::vector<unsigned char> &oDest) const noexcept
 	{
 		oDest.clear();
 		for (unsigned i = 0; i < 256; ++i)
@@ -17,7 +17,7 @@ namespace rlInput
 		}
 	}
 
-	Keyboard::ModKeys Keyboard::modifierKeys() const
+	Keyboard::ModKeys Keyboard::modifierKeys() const noexcept
 	{
 		return ModKeys(
 			(m_upStates[VK_MENU   ].bDown ? ModKey_Alt     : 0) |
@@ -31,7 +31,7 @@ namespace rlInput
 		memset(m_upStates.get(), 0, sizeof(Key) * 256);
 	}
 
-	void Keyboard::prepare()
+	void Keyboard::prepare() noexcept
 	{
 		Key        *pDest   = m_upStates.get();
 		const bool *pRawOld = m_oRawStates_Old;
