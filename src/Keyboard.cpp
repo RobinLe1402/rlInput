@@ -58,21 +58,27 @@ namespace rlInput
 	{
 		switch (uMsg)
 		{
-		case WM_KILLFOCUS:
-			reset();
-			break;
-
 		case WM_KEYDOWN:
 			m_oRawStates_New[wParam] = true;
-			break;
+			return true;
 
 		case WM_KEYUP:
 			m_oRawStates_New[wParam] = false;
+			return true;
+
+
+
+		case WM_KILLFOCUS:
+			// When the window loses focus while a button is being held,
+			// the internal state of this class is corrupted.
+			reset();
 			break;
+
+
 
 		case WM_CHAR:
 			if ((!m_bRecordText && m_bRecordingStopped) || !IsWindowUnicode(hWnd))
-				return false;
+				break;
 
 			if (!m_bRecordText)
 			{
@@ -85,20 +91,19 @@ namespace rlInput
 				}
 
 				m_bRecordingStopped = true;
-				return false;
+				break;
 			}
 
 			if (!IS_LOW_SURROGATE(lParam) ||
 				(m_sRecordedText.length() > 0 && IS_HIGH_SURROGATE(*m_sRecordedText.end())))
 				m_sRecordedText += (wchar_t)lParam;
 
-			return false;
-
-		default:
-			return false;
+			break;
 		}
 
-		return true;
+
+
+		return false;
 	}
 
 	void Keyboard::reset() noexcept
