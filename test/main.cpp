@@ -1,4 +1,5 @@
 #include <rlInput/Keyboard.hpp>
+#include <rlInput/Mouse.hpp>
 
 LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -51,8 +52,10 @@ int WINAPI WinMain(
 LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	auto &keyboard = rlInput::Keyboard::Instance();
+	auto &mouse    = rlInput::Mouse::Instance();
 
 	using rlInput::Keyboard;
+	using rlInput::Mouse;
 
 	if (keyboard.update(hWnd, uMsg, wParam, lParam))
 	{
@@ -97,6 +100,21 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 
 		return 0;
+	}
+
+	if (mouse.update(hWnd, uMsg, wParam, lParam))
+	{
+		mouse.prepare();
+
+		if (mouse.leftButton().bClicked)
+		{
+			MessageBoxA(hWnd, (std::string("Mouse clicked at (") +
+				std::to_string(mouse.x()) +
+				", " +
+				std::to_string(mouse.y()) +
+				")").c_str(), "Info",
+				MB_ICONINFORMATION | MB_APPLMODAL);
+		}
 	}
 
 
