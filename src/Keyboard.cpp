@@ -68,6 +68,11 @@ namespace rlInput
 
 
 
+		case WM_IME_STARTCOMPOSITION:
+			return true; // call to DefWndProc will lead to "Default IME Window" popping up
+
+
+
 		case WM_KILLFOCUS:
 			// When the window loses focus while a button is being held,
 			// the internal state of this class is corrupted.
@@ -84,8 +89,8 @@ namespace rlInput
 			{
 				if (!m_sRecordedText.empty() && IS_HIGH_SURROGATE(*m_sRecordedText.end()))
 				{
-					if (IS_LOW_SURROGATE(lParam))
-						m_sRecordedText += (wchar_t)lParam;
+					if (IS_LOW_SURROGATE(wParam))
+						m_sRecordedText += (wchar_t)wParam;
 					else
 						m_sRecordedText.pop_back();
 				}
@@ -94,9 +99,27 @@ namespace rlInput
 				break;
 			}
 
-			if (!IS_LOW_SURROGATE(lParam) ||
-				(m_sRecordedText.length() > 0 && IS_HIGH_SURROGATE(*m_sRecordedText.end())))
-				m_sRecordedText += (wchar_t)lParam;
+			if (wParam <= 0x7F && iscntrl((int)wParam))
+			{
+				switch (wParam)
+				{
+				case VK_RETURN:
+					m_sRecordedText += '\n';
+					break;
+				case VK_TAB:
+					m_sRecordedText += '\t';
+					break;
+				}
+
+				break;
+			}
+
+			if (m_oRawStates_New[VK_MENU] || m_oRawStates_New[VK_CONTROL])
+				break; // Control key/Alt/Ctrl keypresses are ignored
+
+			if (!IS_LOW_SURROGATE(wParam) ||
+				(m_sRecordedText.length() > 0 && IS_HIGH_SURROGATE(*m_sRecordedText.rbegin())))
+				m_sRecordedText += (wchar_t)wParam;
 
 			break;
 		}
@@ -110,10 +133,6 @@ namespace rlInput
 	{
 		memset(m_oRawStates_Old, 0, sizeof(m_oRawStates_Old));
 		memset(m_oRawStates_New, 0, sizeof(m_oRawStates_New));
-
-		m_bRecordText       = false;
-		m_bRecordingStopped = true;
-		m_sRecordedText.clear();
 	}
 
 }

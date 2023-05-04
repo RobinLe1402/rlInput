@@ -12,6 +12,9 @@ int WINAPI WinMain(
 	(void)hPrevInstance;
 	(void)szCmdLine;
 
+	auto &keyboard = rlInput::Keyboard::Instance();
+	keyboard.startTextRecording();
+
 
 	constexpr wchar_t szCLASSNAME[] = L"TestWindowClass";
 
@@ -58,14 +61,14 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		const auto iModKeys = keyboard.modifierKeys();
 		if (iModKeys & Keyboard::ModKey_Control)
 		{
-			std::string sPressedKeys;
+			std::wstring sPressedKeys;
 
 			for (unsigned char c = 'A'; c <= 'Z'; ++c)
 			{
 				if (keyboard[c].bPressed)
 				{
 					if (!sPressedKeys.empty())
-						sPressedKeys += " + ";
+						sPressedKeys += L" + ";
 					sPressedKeys += c;
 				}
 			}
@@ -73,16 +76,27 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if (!sPressedKeys.empty())
 			{
 				if (iModKeys & Keyboard::ModKey_Alt)
-					sPressedKeys.insert(0, "Alt + ");
+					sPressedKeys.insert(0, L"Alt + ");
 				if (iModKeys & Keyboard::ModKey_Shift)
-					sPressedKeys.insert(0, "Shift + ");
+					sPressedKeys.insert(0, L"Shift + ");
 				if (iModKeys & Keyboard::ModKey_Control)
-					sPressedKeys.insert(0, "Control + ");
+					sPressedKeys.insert(0, L"Control + ");
 
-				MessageBoxA(hWnd, sPressedKeys.c_str(), "Key combination pressed",
+				if (!keyboard.recordedText().empty())
+				{
+					sPressedKeys += L"\nInput text: \"";
+					sPressedKeys += keyboard.recordedText();
+					sPressedKeys += L"\"";
+
+					keyboard.clearRecordedText();
+				}
+
+				MessageBoxW(hWnd, sPressedKeys.c_str(), L"Key combination pressed",
 					MB_ICONINFORMATION | MB_APPLMODAL);
 			}
 		}
+
+		return 0;
 	}
 
 

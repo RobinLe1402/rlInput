@@ -99,12 +99,18 @@ namespace rlInput
 		/// Try to process a Windows message.<para/>
 		/// Should be called every time a Windows message is received.
 		/// </summary>
-		/// <returns>Was the message keyboard-input related?</returns>
+		/// <returns>
+		/// Was the message keyboard-input related?<para />
+		/// If the return value is <c>TRUE</c>, <c>DefWindowProc</c> doesn't have to be called.
+		/// <para/>
+		/// Please note that if you still decide to call DefWndProc with the
+		/// <c>WM_IME_STARTCOMPOSITION</c> message, an ugly default Windows IME popup window will
+		/// appear.
+		/// </returns>
 		bool update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept;
 
 		/// <summary>
-		/// Reset the inner state of the keyboard to "no button down".<para />
-		/// Also stops text recording and clears the previously recorded text.
+		/// Reset the inner state of the keyboard to "no button down".
 		/// </summary>
 		void reset() noexcept;
 
