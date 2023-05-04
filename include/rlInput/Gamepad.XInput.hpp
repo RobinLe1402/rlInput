@@ -101,18 +101,63 @@ namespace rlInput
 
 
 
+			/// <summary>
+			/// Get the state of a specific button at the time of the last call to <c>prepare()</c>.
+			/// </summary>
+			/// <param name="iButtonID">one of the <c>XINPUT_BUTTON_[...]</c> constants.</param>
 			auto &button(unsigned char iButtonID) const noexcept { return m_oButtons[iButtonID]; }
 
+
+			/// <summary>
+			/// Get the state of the left thumb stick at the time of the last call to
+			/// <c>prepare()</c>.
+			/// </summary>
 			auto &leftThumbStick()  const noexcept { return m_oThumbSticks[0]; }
+
+			/// <summary>
+			/// Get the state of the right thumb stick at the time of the last call to
+			/// <c>prepare()</c>.
+			/// </summary>
 			auto &rightThumbStick() const noexcept { return m_oThumbSticks[1]; }
 
+
+			/// <summary>
+			/// Get the state of the left trigger at the time of the last call to
+			/// <c>prepare()</c>.
+			/// </summary>
 			auto &leftTrigger()  const noexcept { return m_oTriggerButtons[0]; }
+
+			/// <summary>
+			/// Get the state of the right trigger at the time of the last call to
+			/// <c>prepare()</c>.
+			/// </summary>
 			auto &rightTrigger() const noexcept { return m_oTriggerButtons[1]; }
 
 
+
+			/// <summary>
+			/// Set the vibration effect.
+			/// </summary>
+			/// <param name="iLeftVibration">
+			/// The speed of the left (low frequency) vibration motor.<para />
+			/// Between 0 and 65535.
+			/// </param>
+			/// <param name="iRightVibration">
+			/// The speed of the right (high frequency) vibration motor.<para />
+			/// Between 0 and 65535.
+			/// </param>
+			/// <returns>Could the settings be applied?</returns>
 			bool setVibration(WORD iLeftVibration, WORD iRightVibration) noexcept;
 
+
+			/// <summary>
+			/// The current speed of the left (low frequency) vibration motor.
+			/// </summary>
 			auto leftVibration() const noexcept { return m_iLeftVibration; }
+
+			/// <summary>
+			/// The current speed of the right (high frequency) vibration motor.
+			/// </summary>
 			auto rightVibration() const noexcept { return m_iRightVibration; }
 
 

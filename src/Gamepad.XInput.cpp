@@ -122,6 +122,12 @@ namespace rlInput
 		memset(m_oButtons,        0, sizeof(m_oButtons));
 		memset(m_oThumbSticks,    0, sizeof(m_oThumbSticks));
 		memset(m_oTriggerButtons, 0, sizeof(m_oTriggerButtons));
+
+		if (!setVibration(0, 0))
+		{
+			m_iLeftVibration  = 0;
+			m_iRightVibration = 0;
+		}
 	}
 
 	bool XInput::Gamepad::setVibration(WORD iLeftVibration, WORD iRightVibration) noexcept
