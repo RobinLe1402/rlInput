@@ -1,3 +1,4 @@
+#include <rlInput/Gamepad.DirectInput.hpp>
 #include <rlInput/Gamepad.XInput.hpp>
 #include <rlInput/Keyboard.hpp>
 #include <rlInput/Mouse.hpp>
@@ -60,8 +61,13 @@ lbEnd:
 	return 0;
 }
 
+
+
+std::unique_ptr<rlInput::DirectInput::Gamepad> upGamepad = nullptr;
+
 void testInputs(HWND hWnd)
 {
+	auto &dinput   = rlInput::DirectInput::Instance();
 	auto &xinput   = rlInput::XInput::Instance();
 	auto &keyboard = rlInput::Keyboard::Instance();
 	auto &mouse    = rlInput::Mouse::Instance();
@@ -72,6 +78,26 @@ void testInputs(HWND hWnd)
 	xinput.prepare();
 	keyboard.prepare();
 	mouse.prepare();
+
+	if (upGamepad == nullptr)
+	{
+		dinput.updateControllerList();
+		if (dinput.availableControllers().size() > 0)
+		{
+			upGamepad = std::make_unique<rlInput::DirectInput::Gamepad>(
+				dinput.availableControllers()[0].guidInstance, hWnd
+			);
+		}
+	}
+
+	if (upGamepad && upGamepad->prepare())
+	{
+		if (upGamepad->buttons()[0].bPressed)
+		{
+			MessageBoxA(NULL, "[Button 0] was pressed.", "Info",
+				   MB_ICONINFORMATION | MB_APPLMODAL);
+		}
+	}
 
 	if (xinput.gamepad(0).connected())
 	{

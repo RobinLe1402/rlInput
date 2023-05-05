@@ -19,18 +19,18 @@
 namespace rlInput
 {
 
-	static constexpr unsigned char XINPUT_BUTTON_DPAD_UP        = 0;
-	static constexpr unsigned char XINPUT_BUTTON_DPAD_DOWN      = 1;
-	static constexpr unsigned char XINPUT_BUTTON_DPAD_LEFT      = 2;
-	static constexpr unsigned char XINPUT_BUTTON_DPAD_RIGHT     = 3;
-	static constexpr unsigned char XINPUT_BUTTON_START          = 4;
-	static constexpr unsigned char XINPUT_BUTTON_BACK           = 5;
-	static constexpr unsigned char XINPUT_BUTTON_LEFT_SHOULDER  = 6;
-	static constexpr unsigned char XINPUT_BUTTON_RIGHT_SHOULDER = 7;
-	static constexpr unsigned char XINPUT_BUTTON_A              = 8;
-	static constexpr unsigned char XINPUT_BUTTON_B              = 9;
-	static constexpr unsigned char XINPUT_BUTTON_X              = 10;
-	static constexpr unsigned char XINPUT_BUTTON_Y              = 11;
+	constexpr unsigned char XINPUT_BUTTON_DPAD_UP        = 0;
+	constexpr unsigned char XINPUT_BUTTON_DPAD_DOWN      = 1;
+	constexpr unsigned char XINPUT_BUTTON_DPAD_LEFT      = 2;
+	constexpr unsigned char XINPUT_BUTTON_DPAD_RIGHT     = 3;
+	constexpr unsigned char XINPUT_BUTTON_START          = 4;
+	constexpr unsigned char XINPUT_BUTTON_BACK           = 5;
+	constexpr unsigned char XINPUT_BUTTON_LEFT_SHOULDER  = 6;
+	constexpr unsigned char XINPUT_BUTTON_RIGHT_SHOULDER = 7;
+	constexpr unsigned char XINPUT_BUTTON_A              = 8;
+	constexpr unsigned char XINPUT_BUTTON_B              = 9;
+	constexpr unsigned char XINPUT_BUTTON_X              = 10;
+	constexpr unsigned char XINPUT_BUTTON_Y              = 11;
 
 
 
@@ -84,11 +84,11 @@ namespace rlInput
 			/// Prepare the internal button info for queries.<para />
 			/// Must be called every time an updated state of the gamepad is required.
 			/// </summary>
-			/// <returns>Was the controller present?</returns>
+			/// <returns>Was the gamepad present?</returns>
 			bool prepare() noexcept;
 
 			/// <summary>
-			/// Reset the inner state of the controller to "no button down".
+			/// Reset the inner state of the gamepad to "no button down".
 			/// </summary>
 			void reset() noexcept;
 
@@ -163,7 +163,7 @@ namespace rlInput
 
 		private: // methods
 
-			Gamepad(unsigned iID);
+			Gamepad(unsigned iID); // --> singleton
 			~Gamepad() = default;
 
 
@@ -244,7 +244,7 @@ namespace rlInput
 		/// Should be called every time a Windows message is received to keep the state of the
 		/// gamepads from getting corrupted.
 		/// </summary>
-		/// <returns>Has the update changed the state of the controllers?</returns>
+		/// <returns>Has the update changed the state of the gamepads?</returns>
 		bool update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept;
 
 
