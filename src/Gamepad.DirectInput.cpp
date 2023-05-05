@@ -189,6 +189,14 @@ namespace rlInput
 		return true;
 	}
 
+	void DirectInput::Gamepad::reset() noexcept
+	{
+		m_bConnected = false;
+		memset(m_oRawStates_Old.get(), 0, m_oButtons.size() * sizeof(bool));
+		memset(m_oButtons.data(),      0, m_oButtons.size() * sizeof(Button));
+		memset(m_oAxes.data(),         0, m_oAxes.size()    * sizeof(Axis));
+	}
+
 
 
 

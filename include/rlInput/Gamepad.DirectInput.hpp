@@ -77,6 +77,14 @@ namespace rlInput
 			/// <returns>Was the gamepad present?</returns>
 			bool prepare() noexcept;
 
+			/// <summary>
+			/// Reset the inner state of the gamepad to "no button down".
+			/// </summary>
+			void reset() noexcept;
+
+
+
+
 
 			/// <summary>
 			/// Was the gamepad present at the time of the last call to <c>prepare()</c>?
