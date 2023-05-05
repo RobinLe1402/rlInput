@@ -67,7 +67,7 @@ namespace rlInput
 	public: // methods
 
 		/// <summary>
-		/// Prepare the internal key info for queries.<para />
+		/// Prepare the internal key infos for queries.<para />
 		/// Must be called every time an updated state of the keyboard is required.
 		/// </summary>
 		void prepare() noexcept;

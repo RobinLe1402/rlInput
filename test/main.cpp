@@ -164,10 +164,12 @@ void testInputs(HWND hWnd)
 
 LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	auto &dinput   = rlInput::DirectInput::Instance();
 	auto &xinput   = rlInput::XInput::Instance();
 	auto &keyboard = rlInput::Keyboard::Instance();
 	auto &mouse    = rlInput::Mouse::Instance();
 
+	dinput.update(hWnd, uMsg, wParam, lParam);
 	xinput.update(hWnd, uMsg, wParam, lParam);
 	keyboard.update(hWnd, uMsg, wParam, lParam);
 	mouse.update(hWnd, uMsg, wParam, lParam);
