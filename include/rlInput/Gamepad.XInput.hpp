@@ -203,6 +203,7 @@ namespace rlInput
 	private: // static variables
 
 		static XInput s_oInstance;
+		static bool s_bForeground;
 
 
 
@@ -234,7 +235,7 @@ namespace rlInput
 
 
 		/// <summary>
-		/// Prepare the internal button info of all gamepads for queries.<para />
+		/// Prepare the internal button infos of all gamepads for queries.<para />
 		/// Must be called every time an updated state of the mouse is required.
 		/// </summary>
 		void prepare() noexcept;

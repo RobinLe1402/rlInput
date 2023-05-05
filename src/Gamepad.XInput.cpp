@@ -10,6 +10,7 @@ namespace rlInput
 {
 
 	XInput XInput::s_oInstance;
+	bool XInput::s_bForeground = false;
 
 
 
@@ -17,6 +18,12 @@ namespace rlInput
 
 	bool XInput::Gamepad::prepare() noexcept
 	{
+		if (!s_bForeground)
+		{
+			reset();
+			return false;
+		}
+
 		m_bConnected = XInputGetState(m_iID, &m_oRawState_New) == ERROR_SUCCESS;
 		if (!m_bConnected)
 		{
@@ -156,20 +163,21 @@ namespace rlInput
 	void XInput::prepare() noexcept
 	{
 		for (auto &o : m_oGamepads)
-		{
 			o.prepare();
-		}
 	}
 
 	bool XInput::update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
 	{
 		switch (uMsg)
 		{
+		case WM_SETFOCUS:
+			s_bForeground = true;
+			break;
+
 		case WM_KILLFOCUS:
+			s_bForeground = false;
 			for (auto &o : m_oGamepads)
-			{
 				o.reset();
-			}
 			break;
 
 		default:
