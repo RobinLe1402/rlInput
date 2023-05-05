@@ -8,6 +8,7 @@
 
 // STL
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -72,7 +73,12 @@ namespace rlInput
 
 			/// <summary>
 			/// Prepare the internal button info for queries.<para />
-			/// Must be called every time an updated state of the gamepad is required.
+			/// Must be called every time an updated state of the gamepad is required.<para />
+			/// You can alternatively call the <c>DirectInput::prepare()</c> method to prepare the
+			/// input of <b>all</b> <c>Gamepad</c> instances.<para />
+			/// Please call <b>either</b> this function <b>or</b> the <c>Gamepad::prepare()</c>
+			/// function in your game loop, but <b>not both</b> as this would result in an
+			/// inaccurate state.
 			/// </summary>
 			/// <returns>Was the gamepad present?</returns>
 			bool prepare() noexcept;
@@ -142,12 +148,38 @@ namespace rlInput
 	private: // static variables
 
 		static DirectInput s_oInstance;
+		static bool s_bForeground;
+		static bool s_bInstanceValid;
 
 
 
 
 
 	public: // methods
+
+		/// <summary>
+		/// Prepare the internal button infos of all controllers for queries.<para />
+		/// Can be called when an updated state of all the gamepads is required.<para/>
+		/// Please call <b>either</b> this function <b>or</b> the <c>Gamepad::prepare()</c>
+		/// function in your game loop, but <b>not both</b> as this would result in an inaccurate
+		/// state.
+		/// </summary>
+		void prepare() noexcept;
+
+		/// <summary>
+		/// Try to process a Windows message.<para/>
+		/// Should be called every time a Windows message is received.
+		/// </summary>
+		void update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept;
+
+		/// <summary>
+		/// Reset the inner state of all the gamepads.
+		/// </summary>
+		void reset() noexcept;
+
+
+
+
 
 		auto &availableControllers() const noexcept { return m_oAvailableControllers; }
 
@@ -166,6 +198,8 @@ namespace rlInput
 
 		std::vector<GamepadMeta> m_oAvailableControllers;
 		IDirectInput8 *m_pDirectInput = nullptr;
+
+		std::set<Gamepad *> m_oGamepadInstances;
 
 	};
 

@@ -90,7 +90,7 @@ namespace rlInput
 			goto lbError;
 		}
 
-		if (m_pDevice->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK)
+		if (m_pDevice->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE) != DI_OK)
 			goto lbError;
 
 
@@ -130,6 +130,7 @@ namespace rlInput
 		}
 
 
+		s_oInstance.m_oGamepadInstances.insert(this);
 		return;
 
 	lbError:
@@ -137,10 +138,22 @@ namespace rlInput
 		throw std::exception("Failed to initialize DirectInput device");
 	}
 
-	DirectInput::Gamepad::~Gamepad() { m_pDevice->Release(); }
+	DirectInput::Gamepad::~Gamepad()
+	{
+		if (s_bInstanceValid)
+			s_oInstance.m_oGamepadInstances.erase(this);
+
+		m_pDevice->Release();
+	}
 
 	bool DirectInput::Gamepad::prepare() noexcept
 	{
+		if (!s_bForeground)
+		{
+			reset();
+			return false;
+		}
+
 		auto hr = m_pDevice->Poll();
 
 		switch (hr)
@@ -156,6 +169,15 @@ namespace rlInput
 			if (hr != DI_OK && hr != S_FALSE)
 			{
 				m_bConnected = (hr != DIERR_INPUTLOST);
+				reset();
+				return false;
+			}
+
+			hr = m_pDevice->Poll();
+			if (hr != DI_OK && hr != DI_NOEFFECT)
+			{
+				m_bConnected = (hr != DIERR_INPUTLOST);
+				reset();
 				return false;
 			}
 		}
@@ -202,6 +224,38 @@ namespace rlInput
 
 
 	DirectInput DirectInput::s_oInstance;
+	bool DirectInput::s_bForeground    = false;
+	bool DirectInput::s_bInstanceValid = false;
+
+	void DirectInput::prepare() noexcept
+	{
+		for (auto p : m_oGamepadInstances)
+			p->prepare();
+	}
+
+	void DirectInput::update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
+	{
+		switch (uMsg)
+		{
+		case WM_SETFOCUS:
+			s_bForeground = true;
+			break;
+
+
+
+		case WM_KILLFOCUS:
+			s_bForeground = false;
+			for (auto p : m_oGamepadInstances)
+				p->reset();
+			break;
+		}
+	}
+
+	void DirectInput::reset() noexcept
+	{
+		for (auto p : m_oGamepadInstances)
+			p->reset();
+	}
 
 	void DirectInput::updateControllerList()
 	{
@@ -354,11 +408,14 @@ namespace rlInput
 			throw std::exception("Error initializing DirectInput");
 
 		updateControllerList();
+
+		s_bInstanceValid = true;
 	}
 
 	DirectInput::~DirectInput()
 	{
 		m_pDirectInput->Release();
+		s_bInstanceValid = false;
 	}
 
 }
