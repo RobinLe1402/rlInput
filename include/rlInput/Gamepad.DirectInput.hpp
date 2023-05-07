@@ -47,6 +47,7 @@ namespace rlInput
 		struct GamepadMeta
 		{
 			GUID guidInstance;
+			GUID guidProduct;
 
 			std::wstring sInstanceName;
 			std::wstring sProductName;
@@ -68,7 +69,7 @@ namespace rlInput
 
 		public: // methods
 
-			Gamepad(const GUID &guid, HWND hWnd);
+			Gamepad(const GamepadMeta &oMeta, HWND hWnd);
 			~Gamepad();
 
 			/// <summary>
@@ -90,6 +91,27 @@ namespace rlInput
 
 
 
+
+
+			/// <summary>
+			/// The instance GUID of the gamepad.
+			/// </summary>
+			const GUID &guidInstance() const noexcept { return m_oGuidInstance; }
+
+			/// <summary>
+			/// The product GUID of the gamepad.
+			/// </summary>
+			const GUID &guidProduct() const noexcept { return m_oGuidProduct; }
+
+			/// <summary>
+			/// The display name of the gamepad.
+			/// </summary>
+			const std::wstring &instanceName() const noexcept { return m_sInstanceName; }
+
+			/// <summary>
+			/// The display name of the type of gamepad.
+			/// </summary>
+			const std::wstring &productName()  const noexcept { return m_sProductName; }
 
 
 			/// <summary>
@@ -119,13 +141,13 @@ namespace rlInput
 
 		private: // variables
 
-			const GUID m_oGUID;
+			const GUID m_oGuidInstance;
+			const GUID m_oGuidProduct;
+			const std::wstring m_sInstanceName;
+			const std::wstring m_sProductName;
 			const HWND m_hWnd;
 
 			IDirectInputDevice8 *m_pDevice = nullptr;
-
-			std::wstring m_sInstanceName;
-			std::wstring m_sProductName;
 
 
 			bool m_bConnected = false;
@@ -185,7 +207,7 @@ namespace rlInput
 
 		void updateControllerList();
 
-		bool isXInput(const GUID &guid) const noexcept;
+		bool isXInput(const GUID &guidProduct) const noexcept;
 
 
 	private: // methods

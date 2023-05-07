@@ -49,9 +49,10 @@ namespace rlInput
 			{
 				oDest.push_back(Meta
 				{
-					.guidInstance = lpddi->guidInstance,
-					.sInstanceName = lpddi->tszInstanceName,
-					.sProductName  = lpddi->tszProductName
+					lpddi->guidInstance,
+					lpddi->guidProduct,
+					lpddi->tszInstanceName,
+					lpddi->tszProductName
 				});
 			}
 			catch (...)
@@ -68,27 +69,18 @@ namespace rlInput
 
 
 
-	DirectInput::Gamepad::Gamepad(const GUID &guid, HWND hWnd) :
-		m_oGUID(guid), m_hWnd(hWnd), m_oAxes(6)
+	DirectInput::Gamepad::Gamepad(const GamepadMeta &oMeta, HWND hWnd) :
+		m_oGuidInstance(oMeta.guidInstance),  m_oGuidProduct(oMeta.guidProduct),
+		m_sInstanceName(oMeta.sInstanceName), m_sProductName(oMeta.sProductName),
+		m_hWnd(hWnd), m_oAxes(6)
 	{
 		const auto pDirectInput = DirectInput::s_oInstance.m_pDirectInput;
 		
-		if (pDirectInput->CreateDevice(guid, &m_pDevice, NULL) != DI_OK)
+		if (pDirectInput->CreateDevice(m_oGuidInstance, &m_pDevice, NULL) != DI_OK)
 			throw std::exception("Failed to initialize DirectInput device");
 
-		bool bAcquired = false;
-		const auto hrSetDataFormat = m_pDevice->SetDataFormat(&c_dfDIJoystick);
-		switch (hrSetDataFormat)
-		{
-		case DIERR_ACQUIRED:
-			bAcquired = true;
-			[[fallthrough]];
-		case DI_OK:
-			break;
-
-		default:
+		if (m_pDevice->SetDataFormat(&c_dfDIJoystick) != DI_OK)
 			goto lbError;
-		}
 
 		if (m_pDevice->SetCooperativeLevel(hWnd, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE) != DI_OK)
 			goto lbError;
@@ -96,21 +88,6 @@ namespace rlInput
 
 
 		{
-			// get device strings
-
-			DIPROPSTRING dips{};
-			dips.diph.dwSize       = sizeof(dips);
-			dips.diph.dwHeaderSize = sizeof(dips.diph);
-
-			auto hrProp = m_pDevice->GetProperty(DIPROP_INSTANCENAME, &dips.diph);
-			if (hrProp == DI_OK || hrProp == S_FALSE)
-				m_sInstanceName = dips.wsz;
-			hrProp = m_pDevice->GetProperty(DIPROP_PRODUCTNAME, &dips.diph);
-			if (hrProp == DI_OK || hrProp == S_FALSE)
-				m_sProductName = dips.wsz;
-
-
-
 			DIDEVCAPS didc{ sizeof(didc) };
 			if (m_pDevice->GetCapabilities(&didc) != DI_OK)
 				goto lbError;
@@ -245,8 +222,7 @@ namespace rlInput
 
 		case WM_KILLFOCUS:
 			s_bForeground = false;
-			for (auto p : m_oGamepadInstances)
-				p->reset();
+			reset();
 			break;
 		}
 	}
@@ -271,8 +247,10 @@ namespace rlInput
 			throw std::exception("DirectInput: Call to EnumDevices failed");
 	}
 
-	bool DirectInput::isXInput(const GUID &guid) const noexcept
+	bool DirectInput::isXInput(const GUID &guidProduct) const noexcept
 	{
+		// TODO: OPTIMIZE!
+
 		// SOURCE CODE BY MICROSOFT
 		// https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-directinput#xinput-and-directinput-side-by-side
 
@@ -363,7 +341,7 @@ namespace rlInput
 
 						// Compare the VID/PID to the DInput device
 						DWORD dwVidPid = MAKELONG(dwVid, dwPid);
-						if (dwVidPid == guid.Data1)
+						if (dwVidPid == guidProduct.Data1)
 						{
 							bIsXinputDevice = true;
 							goto LCleanup;

@@ -176,8 +176,7 @@ namespace rlInput
 
 		case WM_KILLFOCUS:
 			s_bForeground = false;
-			for (auto &o : m_oGamepads)
-				o.reset();
+			reset();
 			break;
 
 		default:
@@ -185,6 +184,12 @@ namespace rlInput
 		}
 
 		return true;
+	}
+
+	void XInput::reset() noexcept
+	{
+		for (auto &o : m_oGamepads)
+			o.reset();
 	}
 
 }

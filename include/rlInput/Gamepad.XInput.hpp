@@ -234,6 +234,8 @@ namespace rlInput
 
 
 
+
+
 		/// <summary>
 		/// Prepare the internal button infos of all gamepads for queries.<para />
 		/// Must be called every time an updated state of the mouse is required.
@@ -247,6 +249,12 @@ namespace rlInput
 		/// </summary>
 		/// <returns>Has the update changed the state of the gamepads?</returns>
 		bool update(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept;
+		
+		/// <summary>
+		/// Reset the inner state of all the gamepads.
+		/// </summary>
+		void reset() noexcept;
+
 
 
 	private: // variables

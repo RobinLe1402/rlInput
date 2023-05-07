@@ -85,8 +85,13 @@ void testInputs(HWND hWnd)
 		if (dinput.availableControllers().size() > 0)
 		{
 			upGamepad = std::make_unique<rlInput::DirectInput::Gamepad>(
-				dinput.availableControllers()[0].guidInstance, hWnd
+				dinput.availableControllers()[0].guidProduct, hWnd
 			);
+			if (dinput.isXInput(upGamepad->guidProduct()))
+			{
+				MessageBoxA(hWnd, "XBox controller found.", "Info",
+					MB_ICONINFORMATION | MB_APPLMODAL);
+			}
 		}
 	}
 
@@ -178,6 +183,7 @@ LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_CLOSE:
+		upGamepad.release();
 		DestroyWindow(hWnd);
 		break;
 
