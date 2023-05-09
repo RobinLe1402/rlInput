@@ -17,6 +17,8 @@ int WINAPI WinMain(
 	(void)hPrevInstance;
 	(void)szCmdLine;
 
+	SetProcessDPIAware();
+
 	auto &keyboard = rlInput::Keyboard::Instance();
 	keyboard.startTextRecording();
 
@@ -85,7 +87,7 @@ void testInputs(HWND hWnd)
 		if (dinput.availableControllers().size() > 0)
 		{
 			upGamepad = std::make_unique<rlInput::DirectInput::Gamepad>(
-				dinput.availableControllers()[0].guidProduct, hWnd
+				dinput.availableControllers()[0], hWnd
 			);
 			if (dinput.isXInput(upGamepad->guidProduct()))
 			{
