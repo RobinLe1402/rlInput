@@ -102,6 +102,11 @@ namespace rlInput
 
 
 			/// <summary>
+			/// The ID of the XBox controller (between 0 and 3).
+			/// </summary>
+			auto id() const noexcept { return m_iID; }
+			
+			/// <summary>
 			/// Get the state of a specific button at the time of the last call to <c>prepare()</c>.
 			/// </summary>
 			/// <param name="iButtonID">one of the <c>XINPUT_BUTTON_[...]</c> constants.</param>
