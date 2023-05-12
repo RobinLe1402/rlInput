@@ -1,3 +1,4 @@
+#include <rlInput/Gamepad.hpp>
 #include <rlInput/Gamepad.DirectInput.hpp>
 #include <rlInput/Gamepad.XInput.hpp>
 #include <rlInput/Keyboard.hpp>
@@ -69,6 +70,7 @@ std::unique_ptr<rlInput::DirectInput::Gamepad> upGamepad = nullptr;
 
 void testInputs(HWND hWnd)
 {
+	auto &ginput   = rlInput::GameInput::Instance();
 	auto &dinput   = rlInput::DirectInput::Instance();
 	auto &xinput   = rlInput::XInput::Instance();
 	auto &keyboard = rlInput::Keyboard::Instance();
