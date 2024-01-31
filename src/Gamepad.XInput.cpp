@@ -95,7 +95,7 @@ namespace rlInput
 
 		m_oTriggerButtons[1].iState = oGamepad.bRightTrigger;
 		m_oTriggerButtons[1].bOutsideThreshold =
-			oGamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+			oGamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 
 
 		m_oThumbSticks[0].iX = oGamepad.sThumbLX;
