@@ -38,11 +38,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="PropertySheet.StaticLib.props" />
+    <Import Project="..\cppenv\vs\lib-static.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="PropertySheet.StaticLib.props" />
+    <Import Project="..\cppenv\vs\lib-static.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -76,16 +76,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\rlInput\Gamepad.DirectInput.hpp" />
-    <ClInclude Include="include\rlInput\Gamepad.XInput.hpp" />
-    <ClInclude Include="include\rlInput\Keyboard.hpp" />
-    <ClInclude Include="include\rlInput\Mouse.hpp" />
+    <ClInclude Include="..\include\rlInput\Gamepad.DirectInput.hpp" />
+    <ClInclude Include="..\include\rlInput\Gamepad.XInput.hpp" />
+    <ClInclude Include="..\include\rlInput\Keyboard.hpp" />
+    <ClInclude Include="..\include\rlInput\Mouse.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Gamepad.DirectInput.cpp" />
-    <ClCompile Include="src\Gamepad.XInput.cpp" />
-    <ClCompile Include="src\Keyboard.cpp" />
-    <ClCompile Include="src\Mouse.cpp" />
+    <ClCompile Include="Gamepad.DirectInput.cpp" />
+    <ClCompile Include="Gamepad.XInput.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
