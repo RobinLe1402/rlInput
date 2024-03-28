@@ -15,30 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\rlInput\Keyboard.hpp">
+    <ClInclude Include="..\include\rlInput\Gamepad.DirectInput.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rlInput\Mouse.hpp">
+    <ClInclude Include="..\include\rlInput\Gamepad.XInput.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rlInput\Gamepad.XInput.hpp">
+    <ClInclude Include="..\include\rlInput\Keyboard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rlInput\Gamepad.DirectInput.hpp">
+    <ClInclude Include="..\include\rlInput\Mouse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Keyboard.cpp">
+    <ClCompile Include="Gamepad.DirectInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mouse.cpp">
+    <ClCompile Include="Gamepad.XInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Gamepad.XInput.cpp">
+    <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Gamepad.DirectInput.cpp">
+    <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
